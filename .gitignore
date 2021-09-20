@@ -1,0 +1,7 @@
+.intermediate/*
+code/obj/*
+code/Propeties/*
+code/topncheeses.csproj
+code/Properties/launchSettings.json
+tools_asset_info.bin
+tools_thumbnail_cache.bin

@@ -1,0 +1,76 @@
+RootPanel {
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background-color: black;
+}
+
+Slide {
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background-color: rgba(30, 125, 230, 1);
+
+    justify-content: center;
+
+    transition: opacity 1s ease-in;
+
+    opacity: 1;
+
+    &:intro {
+        opacity: 0;
+    }
+
+    &:outro {
+        opacity: 0;
+
+        transition: opacity 1s ease-out;
+    }
+
+    .Label {
+        align-self: center;
+
+        font-family: Comic Sans MS;
+        font-size: 128px;
+
+        text-shadow: 4px 4px 0px rgb(20, 20, 20, 1), -4px -4px 0px gray;
+
+        color: white;
+    }
+
+    .Image {
+        position: absolute;
+
+        left: 0;
+        top: 0;
+
+        width: 100%;
+        height: 100%;
+        
+        background-size: 100%;
+
+        .Title {
+            position: absolute;
+
+            width: 100%;
+
+            bottom: 50px;
+            text-align: center;
+
+            font-family: Comic Sans MS;
+            font-size: 72px;
+
+            text-shadow: 3px 3px 0px rgb(20, 20, 20, 1), -3px -3px 0px gray;
+        }
+    }
+}
