@@ -130,7 +130,7 @@ namespace top_n_cheeses
 					}
 				}
 			}
-			Log.Error( CurrentSong.Index );
+
 			if ( CurrentSong.Index == 0 )
 				CurrentSong = Sound.FromScreen( Songs[new Random().Next( 0, Songs.Length - 1 )] );
 		}

@@ -14,7 +14,7 @@ namespace top_n_cheeses
 			+ "&tags=cheese"
 			+ "&lang=en-us"
 			+ "&format=json"
-			+ "&jsoncallback=";
+			+ "&jsoncallback=?";
 		public static async Task<string> Get()
 		{
 			var URI = new Uri( API_URL );
