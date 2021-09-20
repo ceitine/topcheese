@@ -101,7 +101,7 @@ namespace top_n_cheeses
 
 		public override void Tick()
 		{
-			if ( CheeseQuery.Count <= 0 )
+			if ( CheeseQuery == null || CheeseQuery.Count <= 0 )
 				GenerateCheese();
 
 			if ( SinceSlide > 3.5f )
