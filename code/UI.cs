@@ -90,6 +90,8 @@ namespace top_n_cheeses
 		{
 			StyleSheet.Load( "Style.scss" );
 
+			AddChild<Panel>( "Background" );
+
 			GenerateCheese();
 
 			new Slide { Text = "top n amount of cheeses" }
