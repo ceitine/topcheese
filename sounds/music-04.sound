@@ -4,7 +4,7 @@
 	{
 		sounds = 
 		[
-			"sounds/music_04.vsnd",
+			"sounds/music-04.vsnd",
 		]
 		UI = true
 		Volume = 1.0
