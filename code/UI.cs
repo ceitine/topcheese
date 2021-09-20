@@ -39,9 +39,9 @@ namespace top_n_cheeses
 				{
 					Image.Texture = Sandbox.TextureLoader.Image.Load( Result );
 
-					var Title = Image.AddChild<Label>( "Title" );
+					/*var Title = Image.AddChild<Label>( "Title" );
 					Title.Text = Cheese.GetName();
-					Title.Style.FontColor = Color.Random;
+					Title.Style.FontColor = Color.Random;*/
 				}
 				catch
 				{
