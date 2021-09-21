@@ -11,10 +11,10 @@ namespace top_n_cheeses
 	{
 		public static readonly string API_URL = "https://api.flickr.com/services/feeds/photos_public.gne"
 			+ "?format=json"
-			+ "&tags=cheese"
-			+ "&lang=en-us"
-			+ "&format=json"
+			+ "&tagmode=any"
+			+ "&tags=cheese,juusto,ost,fromage,parmesan,mozzarella,cheddar,emmental"
 			+ "&jsoncallback=?";
+
 		public static async Task<string> Get()
 		{
 			var URI = new Uri( API_URL );
