@@ -1,27 +1,65 @@
 ﻿using Sandbox.Internal;
 using System;
-using System.IO;
+using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
-using topncheeses;
 
 namespace top_n_cheeses
 {
 	class Cheese
 	{
-		public static readonly string API_URL = "https://api.flickr.com/services/feeds/photos_public.gne"
-			+ "?format=json"
-			+ "&tagmode=any"
-			+ "&tags=cheese,juusto,ost,fromage,parmesan,mozzarella,cheddar,emmental"
-			+ "&jsoncallback=?";
+		public static readonly Uri STATS_API_URL = new( "https://flickr-cheese-api.herokuapp.com/api/stats" );
+		public static readonly string API_URL = "https://flickr-cheese-api.herokuapp.com/api/cheese/";
+		public static List<string> Pool = new();
 
-		public static async Task<string> Get()
+		public delegate void CheeseCallback();
+
+		public static async Task<int> GetPagesCount()
 		{
-			var URI = new Uri( API_URL );
-			var Result = await new Http( URI )
-				.GetStringAsync();
+			while ( true )
+			{
+				string Result;
+				try
+				{
+					Result = await new Http( STATS_API_URL )
+					  .GetStringAsync();
+				}
+				catch ( Exception )
+				{
+					continue;
+				}
 
-			return Result;
+				var cpc = JsonSerializer.Deserialize<StatsScheme>( Result, new JsonSerializerOptions()
+				{
+					PropertyNameCaseInsensitive = true
+				} ).CheesePagesCount;
+				if ( cpc >= 0 )
+					return cpc;
+				await Task.Delay( 5000 );
+			}
+		}
+
+		public static async Task<string> GetPage( int page )
+		{
+			Uri URI = new( API_URL + page.ToString() );
+			return await new Http( URI )
+				.GetStringAsync();
+		}
+
+		public static async Task Get( CheeseCallback callback )
+		{
+			var cpc = await GetPagesCount();
+
+			for ( int i = 0; i < cpc; i++ )
+			{
+				var page = await GetPage( i );
+				Pool.AddRange( page.Split( '\n' ) );
+
+				if ( i == 0 )
+				{
+					callback();
+				}
+			}
 		}
 
 		static string[] Prefixes = { "cool", "epic", "Swagness", "ball", "sweaty", "cum", "piss", "shid", "fart", "Nerdy", "stanky", "shart", "nutty", "fortnite" };
@@ -41,11 +79,6 @@ namespace top_n_cheeses
 			Result += " " + Cheeses[Rand.Next( 0, Cheeses.Length )];
 
 			return Result;
-		}
-
-		public static FlickrResult ToFlickr( string JSON )
-		{
-			return JsonSerializer.Deserialize<FlickrResult>( JSON );
 		}
 	}
 }

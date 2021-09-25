@@ -2,8 +2,6 @@ using Sandbox;
 using Sandbox.Internal;
 using Sandbox.UI;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace top_n_cheeses
 {
@@ -25,7 +23,7 @@ namespace top_n_cheeses
 				var Label = AddChild<Label>( "Label" );
 				Label.Text = Text;
 			}
-			
+
 			if ( URL != null )
 			{
 				var Image = AddChild<Image>( "Image" );
@@ -48,7 +46,7 @@ namespace top_n_cheeses
 					Log.Error( "whoopsie, next!!" );
 					UI.Current?.Delete();
 				}
-				
+
 			}
 
 			return this;
@@ -61,9 +59,11 @@ namespace top_n_cheeses
 		public static Slide Current;
 
 		Sound CurrentSong;
-
-		List<string> CheeseQuery;
 		int SlideNumber = 0;
+
+		WMMRendering rendering;
+
+		bool isActive = false;
 
 		string[] Songs =
 		{
@@ -76,35 +76,33 @@ namespace top_n_cheeses
 			"music-07"
 		};
 
-		void GenerateCheese()
-		{
-			var CheeseJSON = Cheese.Get().Result;
-			var Result = Cheese.ToFlickr( CheeseJSON.Substring( 1, CheeseJSON.Length - 2 ) );
-
-			CheeseQuery = Result.Items
-				.Select( Res => Res.Media.FirstOrDefault().Value )
-				.ToList();
-		}
-
 		public UI()
 		{
 			StyleSheet.Load( "Style.scss" );
 
 			AddChild<Panel>( "Background" );
+			rendering = AddChild<WMMRendering>();
 
-			GenerateCheese();
+			_ = Cheese.Get( StartSlideshow );
+		}
+
+		public void StartSlideshow()
+		{
+			rendering.Delete();
 
 			new Slide { Text = "top n amount of cheeses" }
 				.Initialize()
 				.Parent = this;
 
 			CurrentSong = Sound.FromScreen( Songs[new Random().Next( 0, Songs.Length - 1 )] );
+
+			isActive = true;
 		}
 
 		public override void Tick()
 		{
-			if ( CheeseQuery == null || CheeseQuery.Count <= 0 )
-				GenerateCheese();
+			if ( !isActive )
+				return;
 
 			if ( SinceSlide > 3.5f )
 			{
@@ -119,16 +117,12 @@ namespace top_n_cheeses
 						new Slide { Text = $"number n-{SlideNumber}" }
 							.Initialize()
 							.Parent = this;
-					} 
+					}
 					else
 					{
-						var URL = CheeseQuery.FirstOrDefault();
-
-						new Slide { URL = URL }
+						new Slide { URL = Cheese.Pool[(SlideNumber - 1) % Cheese.Pool.Count] }
 							.Initialize()
 							.Parent = this;
-
-						CheeseQuery.Remove( URL );
 					}
 				}
 			}
