@@ -8,8 +8,8 @@ namespace top_n_cheeses
 {
 	class Cheese
 	{
-		public static readonly Uri STATS_API_URL = new( "https://flickr-cheese-api.herokuapp.com/api/stats" );
-		public static readonly string API_URL = "https://flickr-cheese-api.herokuapp.com/api/cheese/";
+		public static readonly Uri STATS_API_URL = new( "https://cheese.umrp.ru/api/stats" );
+		public static readonly string API_URL = "https://cheese.umrp.ru/api/cheese/";
 		public static List<string> Pool = new();
 
 		public delegate void CheeseCallback();
